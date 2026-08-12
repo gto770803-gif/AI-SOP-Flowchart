@@ -1,0 +1,1036 @@
+<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI SOP 流程圖產生器</title><script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;background:#f5f7fb;color:#182230}button,input,textarea,select{font:inherit}button{cursor:pointer}.top{height:66px;background:#fff;border-bottom:1px solid #dde3ec;display:flex;justify-content:space-between;align-items:center;padding:0 16px}.top h1{font-size:20px;margin:0}.top small{color:#667085}
+.docTabsBar{background:#fff;border-bottom:1px solid #dde3ec;padding:8px 12px;display:flex;align-items:center;gap:8px;overflow-x:auto}
+.docTabs{display:flex;gap:6px;align-items:center;min-width:max-content}
+.docTab{display:flex;align-items:center;gap:7px;border:1px solid #d0d5dd;background:#f9fafb;border-radius:9px;padding:7px 10px;font-size:12px;color:#475467;white-space:nowrap}
+.docTab.active{background:#111827;color:#fff;border-color:#111827}
+.docTab .close{border:0;background:transparent;color:inherit;padding:0 2px;opacity:.72;font-size:14px}
+.docTab .close:hover{opacity:1}
+.addTabBtn{white-space:nowrap}
+.saveBadge{font-size:11px;color:#067647;white-space:nowrap;margin-left:auto}
+.actions{display:flex;gap:8px}.btn{border:1px solid #d0d7e2;background:#fff;border-radius:9px;padding:9px 11px}.primary{background:#111827;color:#fff;border-color:#111827}.soft{background:#eef2ff;color:#3730a3}.danger{background:#fff5f5;color:#b42318}.app{height:calc(100vh - 109px);display:grid;grid-template-columns:330px 1fr;gap:12px;padding:12px}.panel{background:#fff;border:1px solid #dde3ec;border-radius:14px;box-shadow:0 2px 10px rgba(16,24,40,.04)}aside{padding:14px;overflow:auto}.sec{border-bottom:1px solid #edf0f5;padding-bottom:15px;margin-bottom:15px}.sec:last-child{border:0}.sec h2{font-size:14px;margin:0 0 9px}.sec textarea,.sec input,.sec select{width:100%;border:1px solid #cfd7e4;border-radius:9px;padding:9px}.sec textarea{min-height:130px;resize:vertical}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}.status{font-size:12px;color:#667085;margin-top:8px;min-height:18px}.ok{color:#067647}.err{color:#b42318}.seg{display:grid;grid-template-columns:1fr 1fr;border:1px solid #cfd7e4;border-radius:9px;overflow:hidden}.seg button{border:0;background:#fff;padding:9px}.seg .on{background:#111827;color:#fff}.empty{border:1px dashed #cfd7e4;border-radius:9px;padding:11px;color:#98a2b3;font-size:12px}.hidden{display:none!important}.field{margin-bottom:9px}.field label{display:block;font-size:12px;color:#475467;margin-bottom:4px}.formatRow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.checkLine{display:flex!important;align-items:center;gap:8px;font-size:12px;color:#344054}.checkLine input{width:auto!important;margin:0}
+.checkOptions{display:flex;gap:12px;flex-wrap:wrap;padding:4px 0}
+.contextMenu{position:fixed;z-index:100;background:#fff;border:1px solid #d0d5dd;border-radius:11px;box-shadow:0 12px 34px rgba(16,24,40,.18);padding:6px;min-width:190px}
+.contextMenu button{display:block;width:100%;border:0;background:#fff;text-align:left;padding:8px 10px;border-radius:7px;color:#344054}
+.contextMenu button:hover{background:#f2f4f7}
+.contextMenu .sep{height:1px;background:#eaecf0;margin:5px 0}
+.contextMenu .dangerItem{color:#b42318}
+.shapeHelp{border-top:1px solid #edf0f5;padding:8px 12px;display:flex;gap:8px;flex-wrap:wrap;background:#fff}
+.shapeHelpItem{font-size:11px;color:#667085;background:#f9fafb;border:1px solid #eaecf0;border-radius:999px;padding:5px 8px}
+.shortcutHint{font-size:11px;color:#667085;margin-top:8px;line-height:1.5}
+.symbolLibrary{display:grid;grid-template-columns:1fr 1fr;gap:6px;max-height:330px;overflow:auto;padding:2px}
+.symbolBtn{border:1px solid #d0d5dd;background:#fff;border-radius:8px;padding:7px 8px;text-align:left;font-size:11px;color:#344054}
+.symbolBtn:hover{background:#f2f4f7;border-color:#98a2b3}
+.symbolBtn b{display:block;font-size:11px;color:#101828;margin-bottom:2px}
+.laneRow{display:flex;gap:6px;margin-bottom:6px}.laneRow input{flex:1}.workspace{display:flex;flex-direction:column;overflow:hidden}.bar{display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid #edf0f5}.title{font-size:18px;font-weight:700;border:0;outline:0}.zoom{display:flex;gap:6px;align-items:center}.viewport{flex:1;overflow:auto;background-image:radial-gradient(#d6dde8 1px,transparent 1px);background-size:20px 20px}.svg{width:1500px;height:1050px;display:block;transform-origin:0 0}.node{cursor:grab}.node .shape{fill:#fff;stroke:#344054;stroke-width:2}.node.sel .shape{stroke:#2563eb;stroke-width:3}.node.start .shape,.node.end .shape{fill:#ecfdf3}.node.decision .shape{fill:#fff7e6}.node.document .shape{fill:#f4f3ff}.node.data .shape{fill:#eff8ff}.node.database .shape{fill:#f9f5ff}.node text{font-size:13px;fill:#101828;pointer-events:none}.edgePath{fill:none;stroke:#667085;stroke-width:2;cursor:pointer}.edge.sel .edgePath{stroke:#2563eb;stroke-width:3}.linkPort{fill:#fff;stroke:#2563eb;stroke-width:2;cursor:crosshair}.linkPort:hover{fill:#dbeafe}.linkPort.sourcePicked{fill:#2563eb}.edgeHandle{fill:#fff;stroke:#7c3aed;stroke-width:3;cursor:grab}.edgeHandle:hover{fill:#ede9fe}.linkPreview{fill:none;stroke:#2563eb;stroke-width:2;stroke-dasharray:6 5;pointer-events:none}.dropPort{fill:#dbeafe!important;stroke:#1d4ed8!important;stroke-width:3!important}.contextMenu{max-height:82vh;overflow:auto}.contextTitle{font-size:11px;font-weight:700;color:#667085;padding:5px 8px}.contextShapeGrid{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px}.contextShapeGrid button{font-size:11px;border:1px solid #eaecf0}.edgeQuick{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px}.laneBg{fill:#fbfcfe;stroke:#d0d5dd}.laneHd{fill:#eef2f6;stroke:#d0d5dd}.laneTx{font-size:14px;font-weight:700;fill:#344054}.legend{padding:8px 12px;border-top:1px solid #edf0f5;color:#667085;font-size:11px}.overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);display:flex;align-items:center;justify-content:center;z-index:50}.welcome{width:min(620px,92vw);background:#fff;border-radius:20px;padding:28px}.welcome h2{font-size:28px;margin:0 0 10px}.welcome p{color:#667085;line-height:1.7}.chips{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.chip{background:#f2f4f7;border-radius:999px;padding:7px 10px;font-size:12px}.start{width:100%;padding:13px;font-size:16px}.rules{font-size:12px;line-height:1.55;background:#f9fafb;border:1px solid #eaecf0;border-radius:9px;padding:9px;max-height:220px;overflow:auto}@media(max-width:900px){.app{grid-template-columns:1fr;height:auto}.workspace{height:75vh}.top{height:auto;padding:10px;align-items:flex-start}.actions{flex-wrap:wrap}}
+</style></head><body>
+<div id="welcome" class="overlay"><div class="welcome"><h2>AI SOP 流程圖產生器</h2><p>輸入工作流程，自動整理成 SOP 流程圖或泳道圖。生成後可自行改文字、換圖形、拖曳位置、改泳道和箭頭。</p><div class="chips"><span class="chip">SOP</span><span class="chip">泳道圖</span><span class="chip">自由編輯</span><span class="chip">JPG / Excel / Word</span><span class="chip">多分頁自動保存</span></div><button id="start" class="btn primary start">開始使用</button></div></div>
+<header class="top"><div><h1>AI SOP 流程圖產生器</h1><small>有 API 用 AI；沒有 API 自動切換本機智慧模式</small></div><div class="actions"><button id="new" class="btn">清空目前分頁</button><button id="save" class="btn">儲存 JSON</button><label class="btn">載入 JSON<input id="load" type="file" accept=".json" hidden></label></div></header>
+<div class="docTabsBar">
+  <div id="docTabs" class="docTabs"></div>
+  <button id="addTab" class="btn addTabBtn">＋ 新增分頁</button>
+  <button id="dupTab" class="btn addTabBtn">複製分頁</button>
+  <span id="saveBadge" class="saveBadge">已自動儲存</span>
+</div>
+<div class="app">
+<aside class="panel">
+<section class="sec"><h2>1. 輸入流程</h2><textarea id="prompt" placeholder="例如：客服收到退款需求後先查訂單。如果已出貨，請客人拒收；未出貨則通知行政取消。行政退款完成後，客服通知客人。"></textarea><div class="grid2"><button id="gen" class="btn primary">✨ 產生流程</button><button id="mod" class="btn soft">修改目前流程</button></div><div id="status" class="status">可直接開始使用。</div></section>
+<section class="sec"><h2>2. 圖表模式</h2><div class="seg"><button id="flow" class="on">SOP 流程圖</button><button id="swim">泳道圖</button></div><div class="grid2"><button id="layout" class="btn">自動排版</button><button id="add" class="btn">＋ 新增節點</button><button id="connect" class="btn">↗ 建立連線</button><button id="del" class="btn danger">刪除選取</button></div><div class="shortcutHint">選取節點或箭頭後可直接按 <b>Delete</b> 刪除；節點按右鍵可快速編輯。</div></section>
+<section class="sec"><h2>3. 編輯選取項目</h2><div id="empty" class="empty">點節點或箭頭即可修改。</div><div id="nodeEd" class="hidden">
+<div class="field"><label>節點名稱</label><textarea id="nodeLabel" rows="3"></textarea></div><div class="field"><label>備註</label><textarea id="nodeNote" rows="3" placeholder="可填寫注意事項、補充說明、例外情況"></textarea></div>
+<div class="field"><label>圖形</label><select id="nodeType"><option value="start">開始</option>
+<option value="end">結束</option>
+<option value="process">流程／處理</option>
+<option value="decision">判定</option>
+<option value="data">數據／輸入輸出</option>
+<option value="document">文件</option>
+<option value="predefined">子流程／已定義處理</option>
+<option value="internalStorage">內部存儲</option>
+<option value="database">資料庫</option>
+<option value="externalData">外部數據</option>
+<option value="punchedTape">條帶</option>
+<option value="merge">合併</option>
+<option value="display">展示</option>
+<option value="extract">摘錄</option>
+<option value="manualOperation">人工操作</option>
+<option value="sort">排序</option>
+<option value="sequentialData">行列數據</option>
+<option value="preparation">預備</option>
+<option value="summingJunction">求和</option>
+<option value="manualInput">人工輸入</option>
+<option value="offpageConnector">跨頁引用</option>
+<option value="or">或者</option>
+<option value="punchedCard">卡片</option>
+<option value="loopLimit">迴圈限值</option>
+<option value="connector">頁面內引用／連接</option>
+<option value="comment">註解（虛線）</option></select></div>
+<div class="field"><label>泳道／負責單位</label><select id="nodeLane"></select></div>
+<div class="formatRow">
+  <div class="field"><label>框寬度</label><input id="nodeWidth" type="number" min="80" max="600" step="10"></div>
+  <div class="field"><label>框高度</label><input id="nodeHeight" type="number" min="40" max="400" step="10"></div>
+</div>
+<div class="formatRow">
+  <div class="field"><label>字體大小</label><input id="nodeFontSize" type="number" min="9" max="36" step="1"></div>
+  <div class="field"><label>文字對齊</label><select id="nodeAlign"><option value="center">置中</option><option value="left">靠左</option><option value="right">靠右</option></select></div>
+</div>
+<div class="field"><label>文字樣式</label><div class="checkOptions"><label class="checkLine"><input id="nodeBold" type="checkbox"> 粗體</label><label class="checkLine"><input id="nodeUnderline" type="checkbox"> 底線</label><label class="checkLine"><input id="nodeRed" type="checkbox"> 紅字</label></div></div>
+<div class="grid2"><button id="growNode" class="btn">框放大</button><button id="shrinkNode" class="btn">框縮小</button></div>
+</div><div id="edgeEd" class="hidden">
+<div class="field"><label>箭頭文字</label><input id="edgeLabel" placeholder="例如：是／否"></div>
+<div class="formatRow">
+  <div class="field"><label>起點節點</label><select id="edgeSourceNode"></select></div>
+  <div class="field"><label>終點節點</label><select id="edgeTargetNode"></select></div>
+</div>
+<div class="formatRow">
+  <div class="field"><label>起點接點</label><select id="edgeSourcePort"><option value="auto">自動</option><option value="top">上</option><option value="right">右</option><option value="bottom">下</option><option value="left">左</option></select></div>
+  <div class="field"><label>終點接點</label><select id="edgeTargetPort"><option value="auto">自動</option><option value="top">上</option><option value="right">右</option><option value="bottom">下</option><option value="left">左</option></select></div>
+</div>
+<div class="formatRow">
+  <div class="field"><label>連線方式</label><select id="edgeRouteStyle"><option value="orthogonal">折線</option><option value="straight">直線</option></select></div>
+  <div class="field"><label>線條</label><select id="edgeLineStyle"><option value="solid">實線</option><option value="dashed">虛線</option></select></div>
+</div>
+<div class="field"><label>箭頭方向</label><select id="edgeArrow"><option value="end">往終點 →</option><option value="start">← 往起點</option><option value="both">↔ 雙向</option><option value="none">無箭頭</option></select></div>
+<div class="grid2"><button id="reverseEdge" class="btn">⇄ 反轉方向</button><button id="resetEdgePorts" class="btn">接點改自動</button></div>
+<p class="shortcutHint">選取線後可隨時修改；紫色起點／終點控制點可直接拖到其他圖形的任一接點，不需要刪掉重連。</p>
+</div></section>
+<section class="sec"><h2>4. 泳道</h2><div id="lanes"></div><div class="grid2"><input id="newLane" placeholder="新增部門／角色"><button id="addLane" class="btn">新增</button></div></section>
+<section class="sec"><h2>5. 圖形庫</h2>
+<div id="symbolLibrary" class="symbolLibrary">
+<button class="symbolBtn" data-shape="start"><b>開始</b>流程起點</button>
+<button class="symbolBtn" data-shape="end"><b>結束</b>流程終點</button>
+<button class="symbolBtn" data-shape="process"><b>流程</b>一般處理步驟</button>
+<button class="symbolBtn" data-shape="decision"><b>判定</b>條件／分支</button>
+<button class="symbolBtn" data-shape="data"><b>數據</b>輸入／輸出</button>
+<button class="symbolBtn" data-shape="document"><b>文件</b>表單／文件</button>
+<button class="symbolBtn" data-shape="predefined"><b>子流程</b>已定義處理</button>
+<button class="symbolBtn" data-shape="internalStorage"><b>內部存儲</b>內部資料</button>
+<button class="symbolBtn" data-shape="database"><b>資料庫</b>資料儲存</button>
+<button class="symbolBtn" data-shape="externalData"><b>外部數據</b>外部資料來源</button>
+<button class="symbolBtn" data-shape="punchedTape"><b>條帶</b>帶狀資料</button>
+<button class="symbolBtn" data-shape="merge"><b>合併</b>多路合併</button>
+<button class="symbolBtn" data-shape="display"><b>展示</b>畫面顯示</button>
+<button class="symbolBtn" data-shape="extract"><b>摘錄</b>抽取流程</button>
+<button class="symbolBtn" data-shape="manualOperation"><b>人工操作</b>人工執行</button>
+<button class="symbolBtn" data-shape="sort"><b>排序</b>排序處理</button>
+<button class="symbolBtn" data-shape="sequentialData"><b>行列數據</b>循序資料</button>
+<button class="symbolBtn" data-shape="preparation"><b>預備</b>準備作業</button>
+<button class="symbolBtn" data-shape="summingJunction"><b>求和</b>彙整／求和</button>
+<button class="symbolBtn" data-shape="manualInput"><b>人工輸入</b>手動輸入</button>
+<button class="symbolBtn" data-shape="offpageConnector"><b>跨頁引用</b>連到其他頁</button>
+<button class="symbolBtn" data-shape="or"><b>或者</b>OR 分支</button>
+<button class="symbolBtn" data-shape="punchedCard"><b>卡片</b>卡片資料</button>
+<button class="symbolBtn" data-shape="loopLimit"><b>迴圈限值</b>迴圈邊界</button>
+<button class="symbolBtn" data-shape="connector"><b>頁面內引用</b>同頁連接</button>
+<button class="symbolBtn" data-shape="comment"><b>註解</b>虛線說明框</button>
+</div>
+<p class="shortcutHint">點任一圖形就會直接新增到目前分頁；之後仍可拖曳、改大小、改文字及右鍵編輯。</p>
+</section>
+
+<section class="sec"><h2>6. 匯出</h2><div class="grid2"><button id="jpg" class="btn">JPG</button><button id="xls" class="btn">Excel（可編輯圖形）</button><button id="doc" class="btn">Word</button><button id="rulesBtn" class="btn">查看規範</button></div><div id="rules" class="rules hidden"></div></section>
+</aside>
+<section class="panel workspace"><div class="bar"><input id="title" class="title" value="未命名 SOP"><div class="zoom"><button id="zout" class="btn">−</button><span id="ztext">100%</span><button id="zin" class="btn">＋</button><button id="fit" class="btn">符合畫面</button></div></div><div id="viewport" class="viewport"><svg id="svg" class="svg" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#667085"/></marker></defs><g id="laneLayer"></g><g id="edgeLayer"></g><g id="nodeLayer"></g><g id="previewLayer"></g></svg></div><div class="shapeHelp">
+<span class="shapeHelpItem">圓角框＝開始／結束</span>
+<span class="shapeHelpItem">長方形＝流程／處理</span>
+<span class="shapeHelpItem">菱形＝判定</span>
+<span class="shapeHelpItem">平行四邊形＝數據</span>
+<span class="shapeHelpItem">波浪底＝文件</span>
+<span class="shapeHelpItem">雙邊框＝子流程</span>
+<span class="shapeHelpItem">左上分隔＝內部存儲</span>
+<span class="shapeHelpItem">圓柱＝資料庫</span>
+<span class="shapeHelpItem">曲面框＝外部數據</span>
+<span class="shapeHelpItem">雙波浪＝條帶</span>
+<span class="shapeHelpItem">倒三角＝合併</span>
+<span class="shapeHelpItem">D 形＝展示</span>
+<span class="shapeHelpItem">正三角＝摘錄</span>
+<span class="shapeHelpItem">梯形＝人工操作</span>
+<span class="shapeHelpItem">菱形＋橫線＝排序</span>
+<span class="shapeHelpItem">圓形＋底線＝行列數據</span>
+<span class="shapeHelpItem">六角形＝預備</span>
+<span class="shapeHelpItem">圓形×＝求和</span>
+<span class="shapeHelpItem">斜頂框＝人工輸入</span>
+<span class="shapeHelpItem">五角形＝跨頁引用</span>
+<span class="shapeHelpItem">圓形＋＝或者</span>
+<span class="shapeHelpItem">切角框＝卡片</span>
+<span class="shapeHelpItem">切角上框＝迴圈限值</span>
+<span class="shapeHelpItem">小圓＝頁面內引用／連接</span>
+<span class="shapeHelpItem">虛線框＝註解</span>
+<span class="shapeHelpItem">箭頭＝路徑；泳道＝負責角色；多條路徑＝分叉／合併</span>
+</div></section>
+</div>
+<div id="contextMenu" class="contextMenu hidden"></div>
+<script>
+const $=i=>document.getElementById(i),NS="http://www.w3.org/2000/svg";
+const SHAPE_DEFS=[
+["start","開始"],["end","結束"],["process","流程"],["decision","判定"],["data","數據"],["document","文件"],
+["predefined","子流程"],["internalStorage","內部存儲"],["database","資料庫"],["externalData","外部數據"],["punchedTape","條帶"],
+["merge","合併"],["display","展示"],["extract","摘錄"],["manualOperation","人工操作"],["sort","排序"],["sequentialData","行列數據"],
+["preparation","預備"],["summingJunction","求和"],["manualInput","人工輸入"],["offpageConnector","跨頁引用"],["or","或者"],
+["punchedCard","卡片"],["loopLimit","迴圈限值"],["connector","頁面內引用"],["comment","註解"]
+];
+const RULES=["流程優先由左至右、由上到下，閱讀方向保持一致。","符號使用統一且準確，節點文字保持簡潔。","主要流程保留一個清楚的開始節點，結束節點可依需要存在多個。","流向線盡量避免交叉，箭頭方向要清楚。","一般處理節點原則上單一入口、單一出口；判斷節點可有多個出口。","判斷分支應標示「是／否」或其他清楚條件。","泳道依真正負責角色或部門劃分，跨部門交接要清楚。","AI 不自行捏造公司政策、時限、金額、核准層級或責任單位。","AI 產生的是初稿，使用者可自由修改文字、圖形、位置、泳道與連線。"];
+let mode="flow",zoom=1,sel=null,linkMode=false,linkStart=null,drag=null,canvasW=1500,canvasH=1050,wireDrag=null,wireHover=null;
+let S={title:"未命名 SOP",lanes:["客服","行政"],nodes:[{id:"n1",label:"開始",type:"start",lane:"客服",x:620,y:80},{id:"n2",label:"處理工作",type:"process",lane:"客服",x:600,y:220},{id:"n3",label:"完成",type:"end",lane:"客服",x:620,y:360}],edges:[{id:"e1",source:"n1",target:"n2",label:""},{id:"e2",source:"n2",target:"n3",label:""}]};
+const STORAGE_KEY="ai_sop_flowchart_workspace_v1";
+let workspace={activeId:"",docs:[]};
+let saveTimer=null;
+
+function freshState(title="未命名 SOP"){
+  return{
+    title,
+    lanes:["客服","行政"],
+    nodes:[
+      {id:uid("n"),label:"開始",type:"start",lane:"客服",x:620,y:80,w:160,h:60,fontSize:13,bold:false,underline:false,red:false,align:"center",note:""},
+      {id:uid("n"),label:"處理工作",type:"process",lane:"客服",x:600,y:220,w:200,h:74,fontSize:13,bold:false,underline:false,red:false,align:"center",note:""},
+      {id:uid("n"),label:"完成",type:"end",lane:"客服",x:620,y:360,w:160,h:60,fontSize:13,bold:false,underline:false,red:false,align:"center",note:""}
+    ],
+    edges:[]
+  };
+}
+function wireFreshEdges(st){
+  if(st.nodes.length>=3 && st.edges.length===0){
+    st.edges=[
+      {id:uid("e"),source:st.nodes[0].id,target:st.nodes[1].id,label:""},
+      {id:uid("e"),source:st.nodes[1].id,target:st.nodes[2].id,label:""}
+    ];
+  }
+  return st;
+}
+function deepCopy(v){return JSON.parse(JSON.stringify(v))}
+function normalizeStoredState(st){
+  if(!st||typeof st!=="object") return wireFreshEdges(freshState());
+  st.title=st.title||"未命名 SOP";
+  st.lanes=Array.isArray(st.lanes)&&st.lanes.length?st.lanes:["客服","行政"];
+  st.nodes=Array.isArray(st.nodes)?st.nodes:[];
+  st.edges=Array.isArray(st.edges)?st.edges:[];
+  return st;
+}
+function currentDoc(){
+  return workspace.docs.find(d=>d.id===workspace.activeId)||workspace.docs[0]||null;
+}
+function syncCurrentDoc(){
+  const d=currentDoc();
+  if(d){
+    d.state=deepCopy(S);
+    d.name=(S.title||"未命名 SOP").trim()||"未命名 SOP";
+  }
+}
+function scheduleSave(){
+  clearTimeout(saveTimer);
+  $("saveBadge").textContent="儲存中…";
+  saveTimer=setTimeout(()=>{
+    try{
+      syncCurrentDoc();
+      localStorage.setItem(STORAGE_KEY,JSON.stringify(workspace));
+      $("saveBadge").textContent="已自動儲存";
+    }catch(e){
+      console.error(e);
+      $("saveBadge").textContent="儲存失敗";
+    }
+  },250);
+}
+function loadWorkspace(){
+  try{
+    const raw=localStorage.getItem(STORAGE_KEY);
+    if(raw){
+      const data=JSON.parse(raw);
+      if(Array.isArray(data.docs)&&data.docs.length){
+        workspace={
+          activeId:data.activeId||data.docs[0].id,
+          docs:data.docs.map(d=>({
+            id:d.id||uid("doc"),
+            name:d.name||d.state?.title||"未命名 SOP",
+            state:normalizeStoredState(d.state)
+          }))
+        };
+        if(!workspace.docs.some(d=>d.id===workspace.activeId))workspace.activeId=workspace.docs[0].id;
+        S=deepCopy(currentDoc().state);
+        return;
+      }
+    }
+  }catch(e){console.warn("workspace load failed",e)}
+  const st=wireFreshEdges(freshState("SOP 1"));
+  const doc={id:uid("doc"),name:"SOP 1",state:st};
+  workspace={activeId:doc.id,docs:[doc]};
+  S=deepCopy(st);
+}
+function renderDocTabs(){
+  const box=$("docTabs");
+  if(!box)return;
+  box.innerHTML="";
+  workspace.docs.forEach((d,idx)=>{
+    const wrap=document.createElement("div");
+    wrap.className="docTab"+(d.id===workspace.activeId?" active":"");
+    wrap.title="點一下切換分頁；雙擊名稱可改名";
+    const label=document.createElement("span");
+    label.textContent=d.name||`SOP ${idx+1}`;
+    label.ondblclick=e=>{
+      e.stopPropagation();
+      const nu=prompt("分頁名稱：",d.name||"");
+      if(nu&&nu.trim()){
+        d.name=nu.trim();
+        if(d.id===workspace.activeId){S.title=nu.trim();$("title").value=S.title}
+        scheduleSave();renderDocTabs();
+      }
+    };
+    wrap.onclick=()=>switchDoc(d.id);
+    const close=document.createElement("button");
+    close.className="close";
+    close.textContent="×";
+    close.title="刪除分頁";
+    close.onclick=e=>{e.stopPropagation();deleteDoc(d.id)};
+    wrap.append(label,close);
+    box.append(wrap);
+  });
+}
+function switchDoc(id){
+  if(id===workspace.activeId)return;
+  syncCurrentDoc();
+  const d=workspace.docs.find(x=>x.id===id);if(!d)return;
+  workspace.activeId=id;
+  S=deepCopy(normalizeStoredState(d.state));
+  sel=null;linkMode=false;linkStart=null;
+  renderDocTabs();render();scheduleSave();
+}
+function addDoc(copyCurrent=false){
+  syncCurrentDoc();
+  const baseName=copyCurrent?(S.title||"未命名 SOP")+"（副本）":`SOP ${workspace.docs.length+1}`;
+  const st=copyCurrent?deepCopy(S):wireFreshEdges(freshState(baseName));
+  st.title=baseName;
+  const d={id:uid("doc"),name:baseName,state:st};
+  workspace.docs.push(d);
+  workspace.activeId=d.id;
+  S=deepCopy(st);
+  sel=null;linkMode=false;linkStart=null;
+  renderDocTabs();render();scheduleSave();
+}
+function deleteDoc(id){
+  const d=workspace.docs.find(x=>x.id===id);if(!d)return;
+  if(workspace.docs.length===1){
+    if(!confirm("只剩最後一個分頁，要清空這個分頁嗎？"))return;
+    S=wireFreshEdges(freshState("SOP 1"));
+    d.name="SOP 1";d.state=deepCopy(S);
+    render();scheduleSave();return;
+  }
+  if(!confirm(`確定刪除「${d.name}」分頁？`))return;
+  const idx=workspace.docs.findIndex(x=>x.id===id);
+  workspace.docs.splice(idx,1);
+  if(workspace.activeId===id){
+    const next=workspace.docs[Math.max(0,idx-1)]||workspace.docs[0];
+    workspace.activeId=next.id;S=deepCopy(next.state);
+  }
+  sel=null;renderDocTabs();render();scheduleSave();
+}
+
+const uid=p=>p+Date.now()+Math.random().toString(36).slice(2,6);
+function defaultSz(n){
+      if(n.type==="decision"||n.type==="sort")return{w:190,h:108};
+      if(n.type==="start"||n.type==="end")return{w:160,h:60};
+      if(n.type==="database"||n.type==="externalData"||n.type==="sequentialData")return{w:190,h:84};
+      if(n.type==="connector"||n.type==="summingJunction"||n.type==="or")return{w:72,h:72};
+      if(n.type==="merge"||n.type==="extract"||n.type==="offpageConnector")return{w:150,h:100};
+      if(n.type==="comment")return{w:250,h:94};
+      return{w:200,h:78}
+    }
+function sz(n){const d=defaultSz(n);return{w:Number(n.w)||d.w,h:Number(n.h)||d.h}}
+function cen(n){const s=sz(n);return{x:n.x+s.w/2,y:n.y+s.h/2}}
+function E(n,a={}){const e=document.createElementNS(NS,n);Object.entries(a).forEach(([k,v])=>e.setAttribute(k,v));return e}
+function shp(n,w,h){
+  const stroke="#344054";
+  if(n.type==="decision")return E("polygon",{points:`${w/2},0 ${w},${h/2} ${w/2},${h} 0,${h/2}`,class:"shape"});
+  if(n.type==="data")return E("polygon",{points:`26,0 ${w},0 ${w-26},${h} 0,${h}`,class:"shape"});
+  if(n.type==="document")return E("path",{d:`M0 0H${w}V${h-16}Q${w*.75} ${h+5} ${w*.5} ${h-8}Q${w*.25} ${h-20} 0 ${h-5}Z`,class:"shape"});
+  if(n.type==="predefined"){const g=E("g");g.append(E("rect",{x:0,y:0,width:w,height:h,class:"shape"}),E("line",{x1:16,y1:0,x2:16,y2:h,stroke,"stroke-width":2}),E("line",{x1:w-16,y1:0,x2:w-16,y2:h,stroke,"stroke-width":2}));return g}
+  if(n.type==="internalStorage"){const g=E("g");g.append(E("rect",{x:0,y:0,width:w,height:h,class:"shape"}),E("line",{x1:20,y1:0,x2:20,y2:h,stroke,"stroke-width":2}),E("line",{x1:0,y1:18,x2:w,y2:18,stroke,"stroke-width":2}));return g}
+  if(n.type==="database"){const g=E("g");g.append(E("path",{d:`M0 14Q0 0 ${w/2} 0Q${w} 0 ${w} 14V${h-14}Q${w} ${h} ${w/2} ${h}Q0 ${h} 0 ${h-14}Z`,class:"shape"}),E("ellipse",{cx:w/2,cy:14,rx:w/2,ry:14,class:"shape"}));return g}
+  if(n.type==="externalData")return E("path",{d:`M18 0H${w-24}Q${w} ${h/2} ${w-24} ${h}H18Q0 ${h/2} 18 0Z`,class:"shape"});
+  if(n.type==="punchedTape")return E("path",{d:`M0 12Q${w*.25} 28 ${w*.5} 12Q${w*.75} -4 ${w} 12V${h-12}Q${w*.75} ${h+4} ${w*.5} ${h-12}Q${w*.25} ${h-28} 0 ${h-12}Z`,class:"shape"});
+  if(n.type==="merge")return E("polygon",{points:`0,0 ${w},0 ${w/2},${h}`,class:"shape"});
+  if(n.type==="display")return E("path",{d:`M18 0H${w-28}Q${w} ${h/2} ${w-28} ${h}H18Q0 ${h/2} 18 0Z`,class:"shape"});
+  if(n.type==="extract")return E("polygon",{points:`${w/2},0 ${w},${h} 0,${h}`,class:"shape"});
+  if(n.type==="manualOperation")return E("polygon",{points:`0,0 ${w},0 ${w-24},${h} 24,${h}`,class:"shape"});
+  if(n.type==="sort"){const g=E("g");g.append(E("polygon",{points:`${w/2},0 ${w},${h/2} ${w/2},${h} 0,${h/2}`,class:"shape"}),E("line",{x1:w*.25,y1:h/2,x2:w*.75,y2:h/2,stroke,"stroke-width":2}));return g}
+  if(n.type==="sequentialData"){const g=E("g");const r=Math.min(w,h)*.38,cx=w/2,cy=h/2-4;g.append(E("circle",{cx,cy,r,class:"shape"}),E("line",{x1:cx-r*.1,y1:cy+r,x2:cx+r*1.05,y2:cy+r,stroke,"stroke-width":2}));return g}
+  if(n.type==="preparation")return E("polygon",{points:`24,0 ${w-24},0 ${w},${h/2} ${w-24},${h} 24,${h} 0,${h/2}`,class:"shape"});
+  if(n.type==="summingJunction"){const g=E("g");const r=Math.min(w,h)/2-2,cx=w/2,cy=h/2;g.append(E("circle",{cx,cy,r,class:"shape"}),E("line",{x1:cx-r*.65,y1:cy-r*.65,x2:cx+r*.65,y2:cy+r*.65,stroke,"stroke-width":2}),E("line",{x1:cx+r*.65,y1:cy-r*.65,x2:cx-r*.65,y2:cy+r*.65,stroke,"stroke-width":2}));return g}
+  if(n.type==="manualInput")return E("polygon",{points:`0,16 ${w},0 ${w},${h} 0,${h}`,class:"shape"});
+  if(n.type==="offpageConnector")return E("polygon",{points:`0,0 ${w},0 ${w},${h*.66} ${w/2},${h} 0,${h*.66}`,class:"shape"});
+  if(n.type==="or"){const g=E("g");const r=Math.min(w,h)/2-2,cx=w/2,cy=h/2;g.append(E("circle",{cx,cy,r,class:"shape"}),E("line",{x1:cx-r*.7,y1:cy,x2:cx+r*.7,y2:cy,stroke,"stroke-width":2}),E("line",{x1:cx,y1:cy-r*.7,x2:cx,y2:cy+r*.7,stroke,"stroke-width":2}));return g}
+  if(n.type==="punchedCard")return E("polygon",{points:`18,0 ${w},0 ${w},${h} 0,${h} 0,18`,class:"shape"});
+  if(n.type==="loopLimit")return E("polygon",{points:`18,0 ${w-18},0 ${w},18 ${w},${h} 0,${h} 0,18`,class:"shape"});
+  if(n.type==="connector")return E("circle",{cx:w/2,cy:h/2,r:Math.min(w,h)/2-2,class:"shape"});
+  if(n.type==="comment"){const g=E("g");g.append(E("line",{x1:0,y1:h/2,x2:28,y2:h/2,stroke,"stroke-width":2,"stroke-dasharray":"7 5"}),E("rect",{x:28,y:4,width:w-32,height:h-8,rx:2,fill:"#fffdf7",stroke,"stroke-width":2,"stroke-dasharray":"7 5"}));return g}
+  return E("rect",{x:0,y:0,width:w,height:h,rx:(n.type==="start"||n.type==="end")?h/2:8,class:"shape"})
+}
+function lines(t,m=17){let o=[];String(t).split(/\n/).forEach(l=>{while(l.length>m){o.push(l.slice(0,m));l=l.slice(m)}o.push(l||" ")});return o.slice(0,5)}
+function updateCanvasSize(){
+  let maxX=0,maxY=0;
+  S.nodes.forEach(n=>{const s=sz(n);maxX=Math.max(maxX,n.x+s.w+240);maxY=Math.max(maxY,n.y+s.h+220)});
+  const swimWidth=mode==="swim" ? 40+Math.max(1,S.lanes.length)*320+90 : 0;
+  canvasW=Math.max(1500,maxX,swimWidth);
+  canvasH=Math.max(1050,maxY);
+  $("svg").setAttribute("width",canvasW);$("svg").setAttribute("height",canvasH);
+  $("svg").style.width=canvasW+"px";$("svg").style.height=canvasH+"px";
+}
+function render(){updateCanvasSize();$("title").value=S.title;$("ztext").textContent=Math.round(zoom*100)+"%";$("svg").style.transform=`scale(${zoom})`;$("laneLayer").innerHTML="";$("edgeLayer").innerHTML="";$("nodeLayer").innerHTML="";$("previewLayer").innerHTML="";if(mode==="swim")drawLanes();drawEdges();drawNodes();drawSelectedEdgeHandles();drawEditor();drawLaneList();renderDocTabs();scheduleSave()}
+function drawLanes(){const lw=320,x0=40,laneH=Math.max(960,canvasH-70);(S.lanes.length?S.lanes:["待確認"]).forEach((l,i)=>{const x=x0+i*lw;$("laneLayer").append(E("rect",{x,y:35,width:lw,height:laneH,class:"laneBg"}),E("rect",{x,y:35,width:lw,height:44,class:"laneHd"}));const t=E("text",{x:x+lw/2,y:63,"text-anchor":"middle",class:"laneTx"});t.textContent=l;$("laneLayer").append(t)})}
+function drawNodes(){S.nodes.forEach(n=>{
+  const s=sz(n),g=E("g",{class:`node ${n.type} ${sel?.kind==="node"&&sel.id===n.id?"sel":""}`,transform:`translate(${n.x},${n.y})`,"data-id":n.id});
+  g.append(shp(n,s.w,s.h));
+  const fs=Number(n.fontSize)||13,maxChars=Math.max(6,Math.floor(s.w/(fs*.95))),ls=lines(n.label,maxChars),lh=Math.max(15,fs+4),y=s.h/2-(ls.length-1)*lh/2+fs*.35,al=n.align||"center",tx=al==="left"?12:(al==="right"?s.w-12:s.w/2),anchor=al==="left"?"start":(al==="right"?"end":"middle");
+  ls.forEach((l,i)=>{const t=E("text",{x:tx,y:y+i*lh,"text-anchor":anchor,"font-size":fs,"font-weight":n.bold?"700":"400","text-decoration":n.underline?"underline":"none",fill:n.red?"#d92d20":"#101828"});t.textContent=l;g.append(t)});
+  if((n.note||"").trim()){const badge=E("text",{x:s.w-8,y:16,"text-anchor":"end","font-size":"11",fill:"#b54708","font-weight":"700"});badge.textContent="備註";g.append(badge)}
+  if(linkMode||sel?.kind==="node"&&sel.id===n.id||wireDrag){
+    const ports=[["top",s.w/2,0],["right",s.w,s.h/2],["bottom",s.w/2,s.h],["left",0,s.h/2]];
+    ports.forEach(([port,cx,cy])=>{
+      const cls="linkPort"+(linkStart?.nodeId===n.id&&linkStart?.port===port?" sourcePicked":"")+(wireHover?.nodeId===n.id&&wireHover?.port===port?" dropPort":"");
+      const c=E("circle",{cx,cy,r:7,class:cls,"data-node":n.id,"data-port":port});
+      c.onpointerdown=e=>startWireDrag(e,n.id,port);
+      c.onpointerenter=()=>{if(wireDrag){wireHover={nodeId:n.id,port};updateWirePreview();}};
+      c.onpointerleave=()=>{if(wireDrag&&wireHover?.nodeId===n.id&&wireHover?.port===port){wireHover=null;updateWirePreview();}};
+      c.onclick=e=>{e.stopPropagation();if(linkMode&&!wireDrag)portClick(e,n.id,port)};
+      g.append(c)
+    })
+  }
+  g.onpointerdown=nodeDown;g.onclick=e=>nodeClick(e,n.id);g.oncontextmenu=e=>showContextMenu(e,n.id);$("nodeLayer").append(g)
+})}
+function ensureEdge(ed){
+  if(!ed.sourcePort)ed.sourcePort="auto";
+  if(!ed.targetPort)ed.targetPort="auto";
+  if(!ed.routeStyle)ed.routeStyle="orthogonal";
+  if(!ed.lineStyle)ed.lineStyle="solid";
+  if(!ed.arrow)ed.arrow="end";
+  if(typeof ed.label!=="string")ed.label="";
+  return ed;
+}
+function autoPort(node,other,asSource=true){
+  const a=cen(node),b=cen(other),dx=b.x-a.x,dy=b.y-a.y;
+  if(Math.abs(dx)>Math.abs(dy))return dx>=0?"right":"left";
+  return dy>=0?"bottom":"top";
+}
+function anchorPoint(node,port,other,asSource=true){
+  const s=sz(node),resolved=port&&port!=="auto"?port:autoPort(node,other,asSource);
+  if(resolved==="top")return{x:node.x+s.w/2,y:node.y,port:resolved};
+  if(resolved==="right")return{x:node.x+s.w,y:node.y+s.h/2,port:resolved};
+  if(resolved==="bottom")return{x:node.x+s.w/2,y:node.y+s.h,port:resolved};
+  return{x:node.x,y:node.y+s.h/2,port:"left"};
+}
+function route(ed,a,b){
+  ensureEdge(ed);
+  const p1=anchorPoint(a,ed.sourcePort,b,true),p2=anchorPoint(b,ed.targetPort,a,false);
+  let pts=[p1,p2];
+  if(ed.routeStyle!=="straight"){
+    const vert1=p1.port==="top"||p1.port==="bottom",vert2=p2.port==="top"||p2.port==="bottom";
+    if(vert1&&vert2){
+      const mid=(p1.y+p2.y)/2;pts=[p1,{x:p1.x,y:mid},{x:p2.x,y:mid},p2];
+    }else if(!vert1&&!vert2){
+      const mid=(p1.x+p2.x)/2;pts=[p1,{x:mid,y:p1.y},{x:mid,y:p2.y},p2];
+    }else if(vert1){
+      pts=[p1,{x:p1.x,y:p2.y},p2];
+    }else{
+      pts=[p1,{x:p2.x,y:p1.y},p2];
+    }
+  }
+  const d=pts.map((p,i)=>(i?"L":"M")+p.x+","+p.y).join("");
+  let longest={len:-1,a:pts[0],b:pts[pts.length-1]};
+  for(let i=0;i<pts.length-1;i++){const dx=pts[i+1].x-pts[i].x,dy=pts[i+1].y-pts[i].y,l=Math.hypot(dx,dy);if(l>longest.len)longest={len:l,a:pts[i],b:pts[i+1]}}
+  return{d,points:pts,x:(longest.a.x+longest.b.x)/2,y:(longest.a.y+longest.b.y)/2-7};
+}
+function markerAttrs(ed){
+  ensureEdge(ed);
+  const a={};
+  if(ed.arrow==="end"||ed.arrow==="both")a["marker-end"]="url(#arrow)";
+  if(ed.arrow==="start"||ed.arrow==="both")a["marker-start"]="url(#arrow)";
+  return a;
+}
+function drawEdges(){S.edges.forEach(ed=>{
+  ensureEdge(ed);
+  const a=S.nodes.find(n=>n.id===ed.source),b=S.nodes.find(n=>n.id===ed.target);if(!a||!b)return;
+  const r=route(ed,a,b),g=E("g",{class:`edge ${sel?.kind==="edge"&&sel.id===ed.id?"sel":""}`});
+  const attrs={d:r.d,class:"edgePath",...markerAttrs(ed)};
+  if(ed.lineStyle==="dashed")attrs["stroke-dasharray"]="8 6";
+  const p=E("path",attrs);
+  p.onclick=e=>{e.stopPropagation();sel={kind:"edge",id:ed.id};render()};
+  p.oncontextmenu=e=>showEdgeContextMenu(e,ed.id);
+  g.append(p);
+  if(ed.label){
+    const t=E("text",{x:r.x,y:r.y,"text-anchor":"middle",class:"edgeLabel"});
+    t.textContent=ed.label;t.onclick=e=>{e.stopPropagation();sel={kind:"edge",id:ed.id};render()};t.oncontextmenu=e=>showEdgeContextMenu(e,ed.id);g.append(t)
+  }
+  $("edgeLayer").append(g)
+})}
+
+function svgPointer(e){
+  const p=$("svg").createSVGPoint();p.x=e.clientX;p.y=e.clientY;
+  const m=$("svg").getScreenCTM();return m?p.matrixTransform(m.inverse()):{x:e.clientX,y:e.clientY};
+}
+function startWireDrag(e,nodeId,port){
+  e.preventDefault();e.stopPropagation();
+  const p=svgPointer(e);
+  wireDrag={kind:"new",sourceNodeId:nodeId,sourcePort:port,x:p.x,y:p.y,pointerId:e.pointerId};
+  wireHover=null;
+  try{$("svg").setPointerCapture(e.pointerId)}catch{}
+  sel={kind:"node",id:nodeId};
+  updateWirePreview();
+}
+function currentDragStart(){
+  if(!wireDrag)return null;
+  if(wireDrag.kind==="new"){
+    const n=S.nodes.find(x=>x.id===wireDrag.sourceNodeId);if(!n)return null;
+    const dummy={x:wireDrag.x,y:wireDrag.y,w:1,h:1};
+    return anchorPoint(n,wireDrag.sourcePort,dummy,true);
+  }
+  if(wireDrag.kind==="edgeSource"||wireDrag.kind==="edgeTarget"){
+    const ed=S.edges.find(x=>x.id===wireDrag.edgeId);if(!ed)return null;
+    const a=S.nodes.find(n=>n.id===ed.source),b=S.nodes.find(n=>n.id===ed.target);if(!a||!b)return null;
+    if(wireDrag.kind==="edgeSource")return anchorPoint(b,ed.targetPort,a,false);
+    return anchorPoint(a,ed.sourcePort,b,true);
+  }
+  return null;
+}
+function updateWirePreview(){
+  const layer=$("previewLayer");if(!layer)return;layer.innerHTML="";
+  if(!wireDrag)return;
+  const fixed=currentDragStart();if(!fixed)return;
+  let end={x:wireDrag.x,y:wireDrag.y};
+  if(wireHover){
+    const n=S.nodes.find(x=>x.id===wireHover.nodeId);
+    if(n){
+      const other={x:fixed.x,y:fixed.y,w:1,h:1};
+      end=anchorPoint(n,wireHover.port,other,false);
+    }
+  }
+  let x1=fixed.x,y1=fixed.y,x2=end.x,y2=end.y;
+  if(wireDrag.kind==="edgeSource"){[x1,x2]=[x2,x1];[y1,y2]=[y2,y1]}
+  const d=`M${x1},${y1}L${x2},${y2}`;
+  layer.append(E("path",{d,class:"linkPreview","marker-end":"url(#arrow)"}));
+}
+function finishWireDrag(e){
+  if(!wireDrag)return;
+  if(wireHover){
+    if(wireDrag.kind==="new"&&wireHover.nodeId!==wireDrag.sourceNodeId){
+      const ed={id:uid("e"),source:wireDrag.sourceNodeId,target:wireHover.nodeId,label:"",sourcePort:wireDrag.sourcePort,targetPort:wireHover.port,routeStyle:"orthogonal",lineStyle:"solid",arrow:"end"};
+      S.edges.push(ed);sel={kind:"edge",id:ed.id};msg("連線完成。點線可再拖動起點或終點。","ok");
+    }else if(wireDrag.kind==="edgeSource"){
+      const ed=S.edges.find(x=>x.id===wireDrag.edgeId);
+      if(ed&&wireHover.nodeId!==ed.target){ed.source=wireHover.nodeId;ed.sourcePort=wireHover.port;sel={kind:"edge",id:ed.id};msg("已重新設定連線起點。","ok")}
+    }else if(wireDrag.kind==="edgeTarget"){
+      const ed=S.edges.find(x=>x.id===wireDrag.edgeId);
+      if(ed&&wireHover.nodeId!==ed.source){ed.target=wireHover.nodeId;ed.targetPort=wireHover.port;sel={kind:"edge",id:ed.id};msg("已重新設定連線終點。","ok")}
+    }
+  }else{
+    msg("沒有放到接點上，連線未變更。","err");
+  }
+  wireDrag=null;wireHover=null;try{$("svg").releasePointerCapture(e.pointerId)}catch{};render();
+}
+$("svg").addEventListener("pointermove",e=>{
+  if(!wireDrag)return;
+  const p=svgPointer(e);wireDrag.x=p.x;wireDrag.y=p.y;updateWirePreview();
+});
+$("svg").addEventListener("pointerup",finishWireDrag);
+$("svg").addEventListener("pointercancel",e=>{wireDrag=null;wireHover=null;updateWirePreview()});
+
+function drawSelectedEdgeHandles(){
+  if(sel?.kind!=="edge")return;
+  const ed=S.edges.find(x=>x.id===sel.id);if(!ed)return;ensureEdge(ed);
+  const a=S.nodes.find(n=>n.id===ed.source),b=S.nodes.find(n=>n.id===ed.target);if(!a||!b)return;
+  const sp=anchorPoint(a,ed.sourcePort,b,true),tp=anchorPoint(b,ed.targetPort,a,false);
+  const sh=E("circle",{cx:sp.x,cy:sp.y,r:8,class:"edgeHandle","data-kind":"source"});
+  const th=E("circle",{cx:tp.x,cy:tp.y,r:8,class:"edgeHandle","data-kind":"target"});
+  sh.onpointerdown=e=>{e.preventDefault();e.stopPropagation();const p=svgPointer(e);wireDrag={kind:"edgeSource",edgeId:ed.id,x:p.x,y:p.y,pointerId:e.pointerId};wireHover=null;try{$("svg").setPointerCapture(e.pointerId)}catch{};render();updateWirePreview()};
+  th.onpointerdown=e=>{e.preventDefault();e.stopPropagation();const p=svgPointer(e);wireDrag={kind:"edgeTarget",edgeId:ed.id,x:p.x,y:p.y,pointerId:e.pointerId};wireHover=null;try{$("svg").setPointerCapture(e.pointerId)}catch{};render();updateWirePreview()};
+  $("previewLayer").append(sh,th);
+}
+function portClick(e,nodeId,port){
+  e.stopPropagation();e.preventDefault();
+  if(!linkMode)return;
+  if(!linkStart){
+    linkStart={nodeId,port};sel={kind:"node",id:nodeId};msg(`已選起點（${portName(port)}），請點另一個節點的接點。`);render();return;
+  }
+  if(linkStart.nodeId===nodeId){msg("起點和終點不能是同一個節點。","err");return}
+  const ed={id:uid("e"),source:linkStart.nodeId,target:nodeId,label:"",sourcePort:linkStart.port,targetPort:port,routeStyle:"orthogonal",lineStyle:"solid",arrow:"end"};
+  S.edges.push(ed);linkMode=false;linkStart=null;sel={kind:"edge",id:ed.id};$("connect").textContent="↗ 建立連線";msg("連線完成，可在左側或右鍵線條繼續修改。","ok");render();
+}
+function portName(p){return({top:"上",right:"右",bottom:"下",left:"左",auto:"自動"})[p]||p}
+function nodeClick(e,id){
+  e.stopPropagation();
+  if(linkMode){
+    if(!linkStart){linkStart={nodeId:id,port:"auto"};sel={kind:"node",id};msg("已選起點（自動接點），請點終點或直接點終點的藍色接點。");render();return}
+    if(linkStart.nodeId!==id){
+      const ed={id:uid("e"),source:linkStart.nodeId,target:id,label:"",sourcePort:linkStart.port,targetPort:"auto",routeStyle:"orthogonal",lineStyle:"solid",arrow:"end"};
+      S.edges.push(ed);linkMode=false;linkStart=null;sel={kind:"edge",id:ed.id};$("connect").textContent="↗ 建立連線";msg("連線完成，可繼續調整接點、線型和箭頭。","ok");render()
+    }
+    return
+  }
+  sel={kind:"node",id};render()
+}
+function pt(e){const p=$("svg").createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform($("svg").getScreenCTM().inverse())}
+function nodeDown(e){if(linkMode||wireDrag||e.target?.classList?.contains("linkPort"))return;const n=S.nodes.find(x=>x.id===e.currentTarget.dataset.id),p=pt(e);drag={id:n.id,dx:p.x-n.x,dy:p.y-n.y};e.currentTarget.setPointerCapture(e.pointerId)}
+$("svg").onpointermove=e=>{if(wireDrag||!drag)return;const n=S.nodes.find(x=>x.id===drag.id),p=pt(e);n.x=Math.max(10,p.x-drag.dx);n.y=Math.max(10,p.y-drag.dy);render()};$("svg").onpointerup=()=>drag=null;$("svg").onclick=e=>{if(e.target?.classList?.contains("edgeHandle")||e.target?.classList?.contains("linkPort"))return;sel=null;render()};
+function drawEditor(){$("empty").classList.remove("hidden");$("nodeEd").classList.add("hidden");$("edgeEd").classList.add("hidden");if(sel?.kind==="node"){const n=S.nodes.find(x=>x.id===sel.id);$("empty").classList.add("hidden");$("nodeEd").classList.remove("hidden");$("nodeLabel").value=n.label;$("nodeNote").value=n.note||"";$("nodeType").value=n.type;$("nodeLane").innerHTML=["",...S.lanes].map(l=>`<option value="${l}">${l||"未指定"}</option>`).join("");$("nodeLane").value=n.lane||"";const ns=sz(n);$("nodeWidth").value=ns.w;$("nodeHeight").value=ns.h;$("nodeFontSize").value=Number(n.fontSize)||13;$("nodeBold").checked=!!n.bold;$("nodeUnderline").checked=!!n.underline;$("nodeRed").checked=!!n.red;$("nodeAlign").value=n.align||"center"}else if(sel?.kind==="edge"){const e=S.edges.find(x=>x.id===sel.id);$("empty").classList.add("hidden");$("edgeEd").classList.remove("hidden");ensureEdge(e);$("edgeLabel").value=e.label||"";
+const opts=S.nodes.map(n=>`<option value="${n.id}">${(n.label||n.id).replace(/</g,"&lt;")}</option>`).join("");
+$("edgeSourceNode").innerHTML=opts;$("edgeTargetNode").innerHTML=opts;
+$("edgeSourceNode").value=e.source;$("edgeTargetNode").value=e.target;
+$("edgeSourcePort").value=e.sourcePort;$("edgeTargetPort").value=e.targetPort;
+$("edgeRouteStyle").value=e.routeStyle;$("edgeLineStyle").value=e.lineStyle;$("edgeArrow").value=e.arrow}}
+function drawLaneList(){$("lanes").innerHTML="";S.lanes.forEach((l,i)=>{const r=document.createElement("div");r.className="laneRow";const inp=document.createElement("input");inp.value=l;inp.onchange=()=>{const old=S.lanes[i],nu=inp.value.trim()||old;S.lanes[i]=nu;S.nodes.forEach(n=>{if(n.lane===old)n.lane=nu});render()};const b=document.createElement("button");b.className="btn danger";b.textContent="×";b.onclick=()=>{const old=S.lanes[i];S.lanes.splice(i,1);S.nodes.forEach(n=>{if(n.lane===old)n.lane=S.lanes[0]||""});render()};r.append(inp,b);$("lanes").append(r)})}
+function depths(){const d=Object.fromEntries(S.nodes.map(n=>[n.id,0])),ind=Object.fromEntries(S.nodes.map(n=>[n.id,0]));S.edges.forEach(e=>{if(e.target in ind)ind[e.target]++});const q=S.nodes.filter(n=>ind[n.id]===0).map(n=>n.id);for(let i=0;i<q.length;i++){const u=q[i];S.edges.filter(e=>e.source===u).forEach(e=>{d[e.target]=Math.max(d[e.target]||0,(d[u]||0)+1);if(--ind[e.target]===0)q.push(e.target)})}return d}
+function layout(){const d=depths();if(mode==="swim"){const lw=320,x0=40,c={};S.nodes.forEach(n=>{let li=S.lanes.indexOf(n.lane);if(li<0)li=0;const dep=d[n.id]||0,k=li+"-"+dep;c[k]=(c[k]||0)+1;n.x=x0+li*lw+(lw-sz(n).w)/2;n.y=115+dep*155+(c[k]-1)*90})}else{const L={};S.nodes.forEach(n=>(L[d[n.id]||0]??=[]).push(n));Object.entries(L).forEach(([dep,a])=>{const gap=245,total=(a.length-1)*gap,c=750;a.forEach((n,i)=>{n.x=c-total/2+i*gap-sz(n).w/2;n.y=75+Number(dep)*160})})}render()}
+function msg(t,c=""){$("status").className="status "+c;$("status").textContent=t}
+function hideContextMenu(){$("contextMenu").classList.add("hidden")}
+function duplicateSelectedNode(){
+  if(sel?.kind!=="node")return;
+  const n=S.nodes.find(x=>x.id===sel.id);if(!n)return;
+  const copy={...JSON.parse(JSON.stringify(n)),id:uid("n"),x:n.x+35,y:n.y+35,label:(n.label||"")+"（副本）"};
+  S.nodes.push(copy);sel={kind:"node",id:copy.id};hideContextMenu();render();
+}
+function showContextMenu(e,nodeId){
+  e.preventDefault();e.stopPropagation();sel={kind:"node",id:nodeId};render();
+  const m=$("contextMenu");
+  m.innerHTML=`<div class="contextTitle">更改圖形（完整圖形庫）</div>
+  <div class="contextShapeGrid">${SHAPE_DEFS.map(([type,name])=>`<button data-shape="${type}">${name}</button>`).join("")}</div>
+  <div class="sep"></div>
+  <button data-act="editName">編輯名稱</button><button data-act="editNote">編輯備註</button>
+  <button data-act="bold">切換粗體</button><button data-act="underline">切換底線</button><button data-act="red">切換紅字</button>
+  <button data-act="grow">框放大</button><button data-act="shrink">框縮小</button><button data-act="duplicate">複製節點</button>
+  <div class="sep"></div><button data-act="delete" class="dangerItem">刪除節點</button>`;
+  const x=Math.min(e.clientX,window.innerWidth-360),y=Math.min(e.clientY,window.innerHeight-500);
+  m.style.left=Math.max(6,x)+"px";m.style.top=Math.max(6,y)+"px";m.classList.remove("hidden");
+}
+function reverseEdgeObject(ed){
+  [ed.source,ed.target]=[ed.target,ed.source];
+  [ed.sourcePort,ed.targetPort]=[ed.targetPort,ed.sourcePort];
+}
+function showEdgeContextMenu(e,edgeId){
+  e.preventDefault();e.stopPropagation();sel={kind:"edge",id:edgeId};render();
+  const ed=S.edges.find(x=>x.id===edgeId);if(!ed)return;ensureEdge(ed);
+  const m=$("contextMenu");
+  m.innerHTML=`<div class="contextTitle">編輯連線</div>
+  <div class="edgeQuick">
+    <button data-edge="solid">實線</button><button data-edge="dashed">虛線</button>
+    <button data-edge="orthogonal">折線</button><button data-edge="straight">直線</button>
+    <button data-edge="arrowEnd">箭頭 →</button><button data-edge="arrowStart">← 箭頭</button>
+    <button data-edge="arrowBoth">雙向 ↔</button><button data-edge="arrowNone">無箭頭</button>
+  </div>
+  <div class="sep"></div>
+  <button data-edge="reverse">反轉起點／終點</button>
+  <button data-edge="autoPorts">起終點接點改自動</button>
+  <button data-edge="openEditor">左側完整設定</button>
+  <div class="sep"></div><button data-edge="delete" class="dangerItem">刪除連線</button>`;
+  const x=Math.min(e.clientX,window.innerWidth-260),y=Math.min(e.clientY,window.innerHeight-390);
+  m.style.left=Math.max(6,x)+"px";m.style.top=Math.max(6,y)+"px";m.classList.remove("hidden");
+}
+$("contextMenu").onclick=e=>{
+  const shapeBtn=e.target.closest("button[data-shape]");
+  if(shapeBtn&&sel?.kind==="node"){
+    const n=S.nodes.find(x=>x.id===sel.id);if(n){n.type=shapeBtn.dataset.shape;const d=defaultSz(n);if(!n.w)n.w=d.w;if(!n.h)n.h=d.h;hideContextMenu();render()}return
+  }
+  const edgeBtn=e.target.closest("button[data-edge]");
+  if(edgeBtn&&sel?.kind==="edge"){
+    const ed=S.edges.find(x=>x.id===sel.id);if(!ed)return;ensureEdge(ed);const a=edgeBtn.dataset.edge;
+    if(a==="solid")ed.lineStyle="solid";if(a==="dashed")ed.lineStyle="dashed";
+    if(a==="orthogonal")ed.routeStyle="orthogonal";if(a==="straight")ed.routeStyle="straight";
+    if(a==="arrowEnd")ed.arrow="end";if(a==="arrowStart")ed.arrow="start";if(a==="arrowBoth")ed.arrow="both";if(a==="arrowNone")ed.arrow="none";
+    if(a==="reverse")reverseEdgeObject(ed);
+    if(a==="autoPorts"){ed.sourcePort="auto";ed.targetPort="auto"}
+    if(a==="delete"){deleteSelected();return}
+    hideContextMenu();render();return
+  }
+  const b=e.target.closest("button[data-act]");if(!b||sel?.kind!=="node")return;
+  const n=S.nodes.find(x=>x.id===sel.id);if(!n)return;const a=b.dataset.act;
+  if(a==="editName"){hideContextMenu();$("nodeLabel").focus();$("nodeLabel").select();return}
+  if(a==="editNote"){hideContextMenu();$("nodeNote").focus();return}
+  if(a==="bold")n.bold=!n.bold;if(a==="underline")n.underline=!n.underline;if(a==="red")n.red=!n.red;
+  if(a==="grow"){const s=sz(n);n.w=Math.min(600,s.w+30);n.h=Math.min(400,s.h+20)}
+  if(a==="shrink"){const s=sz(n);n.w=Math.max(80,s.w-30);n.h=Math.max(40,s.h-20)}
+  if(a==="duplicate"){duplicateSelectedNode();return}
+  if(a==="delete"){deleteSelected();return}
+  hideContextMenu();render();
+};
+function guessLane(t){const m=t.match(/^(客服|行政|倉庫|主管|客人|客戶|廠商|財務|會計|物流|門市|業務|人資|工程|IT|系統)/);return m?m[1]:(S.lanes[0]||"待確認")}
+function local(text){const parts=text.replace(/\r/g,"").replace(/[。；;]/g,"\n").split(/\n+/).map(x=>x.trim()).filter(Boolean),nodes=[],edges=[],laneSet=new Set(["客服","行政"]);let prev=null;function add(label,type="process",lane="客服"){laneSet.add(lane);const n={id:uid("n"),label:label.slice(0,60),type,lane,x:0,y:0};nodes.push(n);if(prev)edges.push({id:uid("e"),source:prev.id,target:n.id,label:""});prev=n;return n}add("開始","start",guessLane(parts[0]||"客服"));for(const raw of parts){const segs=raw.split(/\s*(?:→|->|↓)\s*/).filter(Boolean);for(const seg of segs){let type=
+      /(註解|備註|說明)/.test(seg)?"comment":
+      /(子流程|已定義處理)/.test(seg)?"predefined":
+      /(內部存儲|內部儲存)/.test(seg)?"internalStorage":
+      /(外部數據|外部資料)/.test(seg)?"externalData":
+      /(條帶)/.test(seg)?"punchedTape":
+      /(合併)/.test(seg)?"merge":
+      /(展示|顯示)/.test(seg)?"display":
+      /(摘錄|抽取)/.test(seg)?"extract":
+      /(人工操作)/.test(seg)?"manualOperation":
+      /(排序)/.test(seg)?"sort":
+      /(行列數據|循序資料)/.test(seg)?"sequentialData":
+      /(預備|準備)/.test(seg)?"preparation":
+      /(求和|彙整)/.test(seg)?"summingJunction":
+      /(人工輸入)/.test(seg)?"manualInput":
+      /(跨頁引用)/.test(seg)?"offpageConnector":
+      /(或者|OR)/i.test(seg)?"or":
+      /(卡片)/.test(seg)?"punchedCard":
+      /(迴圈限值|循環限值)/.test(seg)?"loopLimit":
+      /(頁面內引用|連接器)/.test(seg)?"connector":
+      /(是否|有沒有|能否|可否|？|\?)/.test(seg)?"decision":
+      /(表單|申請單|文件)/.test(seg)?"document":
+      /(輸入|輸出|數據|資料)/.test(seg)?"data":
+      /(系統|資料庫|查詢|登記)/.test(seg)?"database":"process";add(seg,type,guessLane(seg))}}add("完成","end",prev?.lane||"客服");return{title:parts[0]?.slice(0,24)||"新 SOP",lanes:[...laneSet],nodes,edges}}
+function localModify(instruction){
+  const copy=JSON.parse(JSON.stringify(S));
+  const text=instruction.trim();
+  const removeMatch=text.match(/刪除(?:節點|步驟)?[「"']?(.+?)[」"']?$/);
+  if(removeMatch){
+    const key=removeMatch[1].trim(),ids=copy.nodes.filter(n=>(n.label||"").includes(key)).map(n=>n.id);
+    copy.nodes=copy.nodes.filter(n=>!ids.includes(n.id));
+    copy.edges=copy.edges.filter(e=>!ids.includes(e.source)&&!ids.includes(e.target));
+    return copy;
+  }
+  const rename=text.match(/(?:把|將)[「"']?(.+?)[」"']?(?:改成|修改成|改為)[「"']?(.+?)[」"']?$/);
+  if(rename){
+    const old=rename[1].trim(),nu=rename[2].trim(),n=copy.nodes.find(x=>(x.label||"").includes(old));
+    if(n)n.label=nu;
+    return copy;
+  }
+  const addText=text.replace(/^(新增|加入|增加)(節點|步驟)?[:：\s]*/,"").trim()||text;
+  const end=copy.nodes.find(n=>n.type==="end");
+  const newNode={id:uid("n"),label:addText,type:"process",lane:end?.lane||copy.lanes?.[0]||"待確認",x:0,y:0,w:200,h:74,fontSize:13,bold:false,underline:false,red:false,align:"center",note:""};
+  copy.nodes.push(newNode);
+  if(end){
+    const incoming=copy.edges.find(e=>e.target===end.id);
+    if(incoming){
+      const source=incoming.source;
+      copy.edges=copy.edges.filter(e=>e.id!==incoming.id);
+      copy.edges.push({id:uid("e"),source:source,target:newNode.id,label:""},{id:uid("e"),source:newNode.id,target:end.id,label:""});
+    }
+  }
+  return copy;
+}
+async function generate(modify=false){
+  const t=$("prompt").value.trim();
+  if(!t)return msg(modify?"請輸入你想修改目前流程的指令。":"請先輸入流程內容。","err");
+  msg(modify?"AI 正在修改目前流程…":"正在整理流程…");
+  try{
+    const r=await fetch("/api/generate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({instruction:t,currentDiagram:modify?S:null,mode:modify?"modify":"create"})});
+    if(!r.ok)throw 0;
+    const d=await r.json();if(!d.diagram)throw 0;
+    S=d.diagram;
+    msg(modify?"AI 已修改目前流程。":"AI 模式產生完成。","ok");
+  }catch{
+    S=modify?localModify(t):local(t);
+    msg(modify?"已用本機修改模式套用到目前流程，可再手動調整。":"已用本機智慧模式產生，可直接編輯。","ok");
+  }
+  sel=null;layout();
+}
+function dl(blob,name){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}function safe(){return(S.title||"SOP").replace(/[\\/:*?"<>|]/g,"_")}
+async function jpg(){updateCanvasSize();const c=$("svg").cloneNode(true);c.style.transform="none";c.setAttribute("width",canvasW);c.setAttribute("height",canvasH);const u=URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(c)],{type:"image/svg+xml"})),img=new Image();await new Promise((r,j)=>{img.onload=r;img.onerror=j;img.src=u});const cv=document.createElement("canvas");cv.width=canvasW;cv.height=canvasH;const x=cv.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,canvasW,canvasH);x.drawImage(img,0,0);URL.revokeObjectURL(u);cv.toBlob(b=>dl(b,safe()+".jpg"),"image/jpeg",.94)}
+function esc(s){return String(s??"").replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}function table(){return S.nodes.map((n,i)=>`<tr><td>${i+1}</td><td>${esc(n.lane)}</td><td>${esc(n.label)}</td><td>${esc(n.note||"")}</td><td>${esc(n.type)}</td></tr>`).join("")}
+$("start").onclick=()=>$("welcome").classList.add("hidden");
+$("gen").onclick=()=>generate(false);
+$("mod").onclick=()=>generate(true);
+$("flow").onclick=()=>{mode="flow";$("flow").classList.add("on");$("swim").classList.remove("on");layout()};
+$("swim").onclick=()=>{mode="swim";$("swim").classList.add("on");$("flow").classList.remove("on");layout()};
+$("layout").onclick=layout;
+$("symbolLibrary").onclick=e=>{
+  const b=e.target.closest("[data-shape]");if(!b)return;
+  const type=b.dataset.shape,nid=uid("n"),d=defaultSz({type});
+  S.nodes.push({id:nid,label:b.querySelector("b")?.textContent||"新節點",type,lane:S.lanes[0]||"",x:520,y:140,w:d.w,h:d.h,fontSize:13,bold:false,underline:false,red:false,align:"center",note:""});
+  sel={kind:"node",id:nid};render();
+};
+$("add").onclick=()=>{const nid=uid("n");S.nodes.push({id:nid,label:"新步驟",type:"process",lane:S.lanes[0]||"",x:520,y:140,w:200,h:74,fontSize:13,bold:false,underline:false,red:false,align:"center",note:""});sel={kind:"node",id:nid};render()};
+$("connect").onclick=()=>{
+  linkMode=!linkMode;linkStart=null;
+  $("connect").textContent=linkMode?"取消連線":"↗ 建立連線";
+  msg(linkMode?"連線模式：可點兩個接點，也可以直接按住藍色接點拖到另一個接點。":"已取消連線模式。");
+  render();
+};
+function deleteSelected(){if(!sel)return;if(sel.kind==="node"){S.nodes=S.nodes.filter(n=>n.id!==sel.id);S.edges=S.edges.filter(e=>e.source!==sel.id&&e.target!==sel.id)}else S.edges=S.edges.filter(e=>e.id!==sel.id);sel=null;hideContextMenu();render()}
+$("del").onclick=deleteSelected;
+document.addEventListener("keydown",e=>{
+  const tag=(e.target?.tagName||"").toLowerCase(),editing=tag==="input"||tag==="textarea"||tag==="select"||e.target?.isContentEditable;
+  if(e.key==="Delete"&&!editing&&sel){e.preventDefault();deleteSelected()}
+  if(e.key==="Escape"){hideContextMenu();if(linkMode){linkMode=false;linkStart=null;$("connect").textContent="↗ 建立連線";msg("已取消連線模式。");render()}}
+});
+$("nodeLabel").onchange=e=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){n.label=e.target.value;render()}};$("nodeNote").onchange=e=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){n.note=e.target.value;render()}};
+$("nodeType").onchange=e=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){n.type=e.target.value;render()}};
+$("nodeLane").onchange=e=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){n.lane=e.target.value;render()}};$("nodeWidth").onchange=e=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){n.w=Math.max(80,Math.min(600,Number(e.target.value)||sz(n).w));render()}};
+$("nodeHeight").onchange=e=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){n.h=Math.max(40,Math.min(400,Number(e.target.value)||sz(n).h));render()}};
+$("nodeFontSize").onchange=e=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){n.fontSize=Math.max(9,Math.min(36,Number(e.target.value)||13));render()}};
+$("nodeBold").onchange=e=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){n.bold=!!e.target.checked;render()}};$("nodeUnderline").onchange=e=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){n.underline=!!e.target.checked;render()}};$("nodeRed").onchange=e=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){n.red=!!e.target.checked;render()}};
+$("nodeAlign").onchange=e=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){n.align=e.target.value;render()}};
+$("growNode").onclick=()=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){const s=sz(n);n.w=Math.min(600,s.w+30);n.h=Math.min(400,s.h+20);render()}};
+$("shrinkNode").onclick=()=>{const n=S.nodes.find(x=>x.id===sel?.id);if(n){const s=sz(n);n.w=Math.max(80,s.w-30);n.h=Math.max(40,s.h-20);render()}};
+$("edgeLabel").onchange=e=>{const ed=S.edges.find(x=>x.id===sel?.id);if(ed){ed.label=e.target.value;render()}};
+$("edgeSourceNode").onchange=e=>{const ed=S.edges.find(x=>x.id===sel?.id);if(ed&&e.target.value!==ed.target){ed.source=e.target.value;render()}};
+$("edgeTargetNode").onchange=e=>{const ed=S.edges.find(x=>x.id===sel?.id);if(ed&&e.target.value!==ed.source){ed.target=e.target.value;render()}};
+$("edgeSourcePort").onchange=e=>{const ed=S.edges.find(x=>x.id===sel?.id);if(ed){ed.sourcePort=e.target.value;render()}};
+$("edgeTargetPort").onchange=e=>{const ed=S.edges.find(x=>x.id===sel?.id);if(ed){ed.targetPort=e.target.value;render()}};
+$("edgeRouteStyle").onchange=e=>{const ed=S.edges.find(x=>x.id===sel?.id);if(ed){ed.routeStyle=e.target.value;render()}};
+$("edgeLineStyle").onchange=e=>{const ed=S.edges.find(x=>x.id===sel?.id);if(ed){ed.lineStyle=e.target.value;render()}};
+$("edgeArrow").onchange=e=>{const ed=S.edges.find(x=>x.id===sel?.id);if(ed){ed.arrow=e.target.value;render()}};
+$("reverseEdge").onclick=()=>{const ed=S.edges.find(x=>x.id===sel?.id);if(ed){ensureEdge(ed);reverseEdgeObject(ed);render()}};
+$("resetEdgePorts").onclick=()=>{const ed=S.edges.find(x=>x.id===sel?.id);if(ed){ensureEdge(ed);ed.sourcePort="auto";ed.targetPort="auto";render()}};
+$("addLane").onclick=()=>{const v=$("newLane").value.trim();if(v&&!S.lanes.includes(v)){S.lanes.push(v);$("newLane").value="";render()}};
+$("title").oninput=e=>{S.title=e.target.value;const d=currentDoc();if(d)d.name=e.target.value||"未命名 SOP";renderDocTabs();scheduleSave()};
+$("new").onclick=()=>{if(confirm("確定清空目前分頁？")){const nm=S.title||"未命名 SOP";S={title:nm,lanes:["客服","行政"],nodes:[],edges:[]};sel=null;render()}};
+$("save").onclick=()=>dl(new Blob([JSON.stringify(S,null,2)],{type:"application/json"}),safe()+".json");
+$("load").onchange=async e=>{try{S=JSON.parse(await e.target.files[0].text());layout()}catch{alert("JSON 格式不正確")}};
+$("jpg").onclick=jpg;
+
+function xmlEsc(s){
+  return String(s??"")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&apos;");
+}
+function pxEmu(v){return Math.round(Number(v||0)*9525)}
+function shapePreset(type){
+  return ({
+    start:"flowChartTerminator",
+    end:"flowChartTerminator",
+    process:"flowChartProcess",
+    decision:"flowChartDecision",
+    data:"flowChartInputOutput",
+    document:"flowChartDocument",
+    predefined:"flowChartPredefinedProcess",
+    internalStorage:"flowChartInternalStorage",
+    database:"flowChartMagneticDisk",
+    externalData:"flowChartOfflineStorage",
+    punchedTape:"flowChartPunchedTape",
+    merge:"flowChartMerge",
+    display:"flowChartDisplay",
+    extract:"flowChartExtract",
+    manualOperation:"flowChartManualOperation",
+    sort:"flowChartSort",
+    sequentialData:"flowChartMagneticTape",
+    preparation:"flowChartPreparation",
+    summingJunction:"flowChartSummingJunction",
+    manualInput:"flowChartManualInput",
+    offpageConnector:"flowChartOffpageConnector",
+    or:"flowChartOr",
+    punchedCard:"flowChartPunchedCard",
+    loopLimit:"hexagon",
+    connector:"flowChartConnector",
+    comment:"rect"
+  })[type]||"rect";
+}
+function shapeFill(type){
+  if(type==="start"||type==="end") return "ECFDF3";
+  if(type==="decision"||type==="sort") return "FFF7E6";
+  if(type==="document"||type==="predefined") return "F4F3FF";
+  if(type==="data"||type==="externalData"||type==="display") return "EFF8FF";
+  if(type==="database"||type==="internalStorage"||type==="sequentialData") return "F9F5FF";
+  if(type==="comment") return "FFFDF7";
+  return "FFFFFF";
+}
+function drawingShapeXml(node, objectId, namePrefix="Node"){
+  const s=sz(node), x=pxEmu(node.x), y=pxEmu(node.y), w=pxEmu(s.w), h=pxEmu(s.h);
+  return `<xdr:absoluteAnchor>
+    <xdr:pos x="${x}" y="${y}"/>
+    <xdr:ext cx="${w}" cy="${h}"/>
+    <xdr:sp macro="" textlink="">
+      <xdr:nvSpPr>
+        <xdr:cNvPr id="${objectId}" name="${namePrefix} ${objectId}"/>
+        <xdr:cNvSpPr txBox="0"/>
+      </xdr:nvSpPr>
+      <xdr:spPr>
+        <a:xfrm><a:off x="0" y="0"/><a:ext cx="${w}" cy="${h}"/></a:xfrm>
+        <a:prstGeom prst="${shapePreset(node.type)}"><a:avLst/></a:prstGeom>
+        <a:solidFill><a:srgbClr val="${shapeFill(node.type)}"/></a:solidFill>
+        <a:ln w="19050"><a:solidFill><a:srgbClr val="344054"/></a:solidFill></a:ln>
+      </xdr:spPr>
+      <xdr:txBody>
+        <a:bodyPr wrap="square" anchor="ctr"/>
+        <a:lstStyle/>
+        <a:p>
+          <a:pPr algn="${node.align==="left"?"l":node.align==="right"?"r":"ctr"}"/>
+          <a:r><a:rPr lang="zh-TW" sz="${Math.round((Number(node.fontSize)||13)*100)}" b="${node.bold?1:0}" u="${node.underline?"sng":"none"}"><a:solidFill><a:srgbClr val="${node.red?"D92D20":"101828"}"/></a:solidFill></a:rPr><a:t>${xmlEsc(node.label)}</a:t></a:r>
+          <a:endParaRPr lang="zh-TW" sz="${Math.round((Number(node.fontSize)||13)*100)}" b="${node.bold?1:0}" u="${node.underline?"sng":"none"}"><a:solidFill><a:srgbClr val="${node.red?"D92D20":"101828"}"/></a:solidFill></a:endParaRPr>
+        </a:p>
+      </xdr:txBody>
+    </xdr:sp>
+    <xdr:clientData/>
+  </xdr:absoluteAnchor>`;
+}
+function commentLeaderXml(node, objectId){
+  if(node.type!=="comment")return "";
+  const y=node.y+sz(node).h/2;
+  return `<xdr:absoluteAnchor>
+    <xdr:pos x="${pxEmu(node.x)}" y="${pxEmu(y)}"/>
+    <xdr:ext cx="${pxEmu(28)}" cy="${pxEmu(1)}"/>
+    <xdr:cxnSp macro="">
+      <xdr:nvCxnSpPr><xdr:cNvPr id="${objectId}" name="Comment Leader ${objectId}"/><xdr:cNvCxnSpPr/></xdr:nvCxnSpPr>
+      <xdr:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${pxEmu(28)}" cy="${pxEmu(1)}"/></a:xfrm>
+        <a:prstGeom prst="line"><a:avLst/></a:prstGeom>
+        <a:ln w="19050"><a:solidFill><a:srgbClr val="475467"/></a:solidFill><a:prstDash val="sysDash"/></a:ln>
+      </xdr:spPr>
+    </xdr:cxnSp><xdr:clientData/>
+  </xdr:absoluteAnchor>`;
+}
+function noteShapeXml(node, objectId){
+  if(!(node.note||"").trim())return "";
+  const s=sz(node),x=node.x+s.w+12,y=node.y,w=190,h=Math.max(50,Math.min(110,42+Math.ceil(node.note.length/18)*14));
+  return `<xdr:absoluteAnchor>
+    <xdr:pos x="${pxEmu(x)}" y="${pxEmu(y)}"/><xdr:ext cx="${pxEmu(w)}" cy="${pxEmu(h)}"/>
+    <xdr:sp macro="" textlink=""><xdr:nvSpPr><xdr:cNvPr id="${objectId}" name="備註 ${objectId}"/><xdr:cNvSpPr txBox="1"/></xdr:nvSpPr>
+      <xdr:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${pxEmu(w)}" cy="${pxEmu(h)}"/></a:xfrm><a:prstGeom prst="roundRect"><a:avLst/></a:prstGeom>
+        <a:solidFill><a:srgbClr val="FFF8E7"/></a:solidFill><a:ln w="12700"><a:solidFill><a:srgbClr val="F79009"/></a:solidFill></a:ln></xdr:spPr>
+      <xdr:txBody><a:bodyPr wrap="square" anchor="ctr"/><a:lstStyle/><a:p><a:r><a:rPr lang="zh-TW" sz="950"><a:solidFill><a:srgbClr val="7A2E0E"/></a:solidFill></a:rPr><a:t>${xmlEsc("備註："+node.note)}</a:t></a:r><a:endParaRPr lang="zh-TW" sz="950"/></a:p></xdr:txBody>
+    </xdr:sp><xdr:clientData/>
+  </xdr:absoluteAnchor>`;
+}
+function laneShapeXml(lane, index, objectId){
+  const lw=320, x0=40, x=x0+index*lw, y=35, h=Math.max(960,canvasH-70);
+  const headerH=44;
+  return `<xdr:absoluteAnchor>
+    <xdr:pos x="${pxEmu(x)}" y="${pxEmu(y)}"/>
+    <xdr:ext cx="${pxEmu(lw)}" cy="${pxEmu(h)}"/>
+    <xdr:sp macro="" textlink="">
+      <xdr:nvSpPr><xdr:cNvPr id="${objectId}" name="泳道 ${objectId}"/><xdr:cNvSpPr txBox="0"/></xdr:nvSpPr>
+      <xdr:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${pxEmu(lw)}" cy="${pxEmu(h)}"/></a:xfrm>
+        <a:prstGeom prst="rect"><a:avLst/></a:prstGeom>
+        <a:solidFill><a:srgbClr val="FBFCFE"/></a:solidFill>
+        <a:ln w="12700"><a:solidFill><a:srgbClr val="D0D5DD"/></a:solidFill></a:ln>
+      </xdr:spPr>
+      <xdr:txBody><a:bodyPr/><a:lstStyle/><a:p><a:endParaRPr/></a:p></xdr:txBody>
+    </xdr:sp><xdr:clientData/>
+  </xdr:absoluteAnchor>
+  <xdr:absoluteAnchor>
+    <xdr:pos x="${pxEmu(x)}" y="${pxEmu(y)}"/>
+    <xdr:ext cx="${pxEmu(lw)}" cy="${pxEmu(headerH)}"/>
+    <xdr:sp macro="" textlink="">
+      <xdr:nvSpPr><xdr:cNvPr id="${objectId+1}" name="泳道標題 ${objectId+1}"/><xdr:cNvSpPr txBox="0"/></xdr:nvSpPr>
+      <xdr:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${pxEmu(lw)}" cy="${pxEmu(headerH)}"/></a:xfrm>
+        <a:prstGeom prst="rect"><a:avLst/></a:prstGeom>
+        <a:solidFill><a:srgbClr val="EEF2F6"/></a:solidFill>
+        <a:ln w="12700"><a:solidFill><a:srgbClr val="D0D5DD"/></a:solidFill></a:ln>
+      </xdr:spPr>
+      <xdr:txBody><a:bodyPr anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/>
+        <a:r><a:rPr lang="zh-TW" sz="1200" b="1"/><a:t>${xmlEsc(lane)}</a:t></a:r>
+        <a:endParaRPr lang="zh-TW" sz="1200"/>
+      </a:p></xdr:txBody>
+    </xdr:sp><xdr:clientData/>
+  </xdr:absoluteAnchor>`;
+}
+function lineSegmentXml(x1,y1,x2,y2,objectId,arrowStart=false,arrowEnd=false,lineStyle="solid",name="Arrow"){
+  let x=Math.min(x1,x2), y=Math.min(y1,y2), w=Math.max(1,Math.abs(x2-x1)), h=Math.max(1,Math.abs(y2-y1));
+  const flipH=x2<x1?' flipH="1"':'', flipV=y2<y1?' flipV="1"':'';
+  return `<xdr:absoluteAnchor>
+    <xdr:pos x="${pxEmu(x)}" y="${pxEmu(y)}"/><xdr:ext cx="${pxEmu(w)}" cy="${pxEmu(h)}"/>
+    <xdr:cxnSp macro=""><xdr:nvCxnSpPr><xdr:cNvPr id="${objectId}" name="${name} ${objectId}"/><xdr:cNvCxnSpPr/></xdr:nvCxnSpPr>
+      <xdr:spPr><a:xfrm${flipH}${flipV}><a:off x="0" y="0"/><a:ext cx="${pxEmu(w)}" cy="${pxEmu(h)}"/></a:xfrm>
+        <a:prstGeom prst="line"><a:avLst/></a:prstGeom>
+        <a:ln w="19050"><a:solidFill><a:srgbClr val="667085"/></a:solidFill>${lineStyle==="dashed"?'<a:prstDash val="sysDash"/>':""}
+          ${arrowStart?'<a:tailEnd type="triangle"/>':'<a:tailEnd type="none"/>'}
+          ${arrowEnd?'<a:headEnd type="triangle"/>':'<a:headEnd type="none"/>'}
+        </a:ln>
+      </xdr:spPr>
+    </xdr:cxnSp><xdr:clientData/>
+  </xdr:absoluteAnchor>`;
+}
+function edgeLabelXml(label, x, y, objectId){
+  if(!label) return "";
+  const w=Math.max(48,label.length*16+20), h=26;
+  return `<xdr:absoluteAnchor>
+    <xdr:pos x="${pxEmu(x-w/2)}" y="${pxEmu(y-h/2)}"/>
+    <xdr:ext cx="${pxEmu(w)}" cy="${pxEmu(h)}"/>
+    <xdr:sp macro="" textlink="">
+      <xdr:nvSpPr><xdr:cNvPr id="${objectId}" name="分支文字 ${objectId}"/><xdr:cNvSpPr txBox="1"/></xdr:nvSpPr>
+      <xdr:spPr><a:xfrm><a:off x="0" y="0"/><a:ext cx="${pxEmu(w)}" cy="${pxEmu(h)}"/></a:xfrm>
+        <a:prstGeom prst="rect"><a:avLst/></a:prstGeom>
+        <a:solidFill><a:srgbClr val="FFFFFF"><a:alpha val="90000"/></a:srgbClr></a:solidFill>
+        <a:ln><a:noFill/></a:ln>
+      </xdr:spPr>
+      <xdr:txBody><a:bodyPr anchor="ctr"/><a:lstStyle/><a:p><a:pPr algn="ctr"/>
+        <a:r><a:rPr lang="zh-TW" sz="1000"/><a:t>${xmlEsc(label)}</a:t></a:r><a:endParaRPr lang="zh-TW" sz="1000"/>
+      </a:p></xdr:txBody>
+    </xdr:sp><xdr:clientData/>
+  </xdr:absoluteAnchor>`;
+}
+function edgeDrawingXml(edge,nextId){
+  const a=S.nodes.find(n=>n.id===edge.source),b=S.nodes.find(n=>n.id===edge.target);
+  if(!a||!b)return{xml:"",nextId};
+  ensureEdge(edge);const r=route(edge,a,b),pts=r.points;let xml="";
+  for(let i=0;i<pts.length-1;i++){
+    const first=i===0,last=i===pts.length-2;
+    const startArrow=first&&(edge.arrow==="start"||edge.arrow==="both");
+    const endArrow=last&&(edge.arrow==="end"||edge.arrow==="both");
+    xml+=lineSegmentXml(pts[i].x,pts[i].y,pts[i+1].x,pts[i+1].y,nextId++,startArrow,endArrow,edge.lineStyle);
+  }
+  if(edge.label)xml+=edgeLabelXml(edge.label,r.x,r.y,nextId++);
+  return{xml,nextId};
+}
+async function exportEditableExcel(){
+  if(typeof JSZip==="undefined"){alert("Excel 匯出元件尚未載入，請重新整理後再試。");return}
+  const zip=new JSZip();
+  let drawing="",objectId=2;
+  if(mode==="swim"){
+    S.lanes.forEach((lane,i)=>{drawing+=laneShapeXml(lane,i,objectId);objectId+=2});
+  }
+  S.edges.forEach(ed=>{const r=edgeDrawingXml(ed,objectId);drawing+=r.xml;objectId=r.nextId});
+  S.nodes.forEach(n=>{drawing+=drawingShapeXml(n,objectId++);if(n.type==="comment")drawing+=commentLeaderXml(n,objectId++);if((n.note||"").trim())drawing+=noteShapeXml(n,objectId++);});
+  const now=new Date().toISOString();
+  zip.file("[Content_Types].xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">
+<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>
+<Default Extension="xml" ContentType="application/xml"/>
+<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>
+<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>
+<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>
+<Override PartName="/xl/drawings/drawing1.xml" ContentType="application/vnd.openxmlformats-officedocument.drawing+xml"/>
+<Override PartName="/docProps/core.xml" ContentType="application/vnd.openxmlformats-package.core-properties+xml"/>
+<Override PartName="/docProps/app.xml" ContentType="application/vnd.openxmlformats-officedocument.extended-properties+xml"/>
+</Types>`);
+  zip.folder("_rels").file(".rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/>
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties" Target="docProps/core.xml"/>
+<Relationship Id="rId3" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties" Target="docProps/app.xml"/>
+</Relationships>`);
+  zip.folder("docProps").file("core.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cp:coreProperties xmlns:cp="http://schemas.openxmlformats.org/package/2006/metadata/core-properties" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:dcterms="http://purl.org/dc/terms/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<dc:title>${xmlEsc(S.title)}</dc:title><dc:creator>AI SOP Flowchart</dc:creator><dcterms:created xsi:type="dcterms:W3CDTF">${now}</dcterms:created>
+</cp:coreProperties>`);
+  zip.folder("docProps").file("app.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Properties xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties" xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes">
+<Application>Microsoft Excel Compatible</Application></Properties>`);
+  zip.folder("xl").file("workbook.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<sheets><sheet name="SOP流程圖" sheetId="1" r:id="rId1"/></sheets></workbook>`);
+  zip.folder("xl").folder("_rels").file("workbook.xml.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>
+<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/>
+</Relationships>`);
+  zip.folder("xl").file("styles.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">
+<fonts count="1"><font><sz val="11"/><name val="Calibri"/></font></fonts>
+<fills count="2"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill></fills>
+<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>
+<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>
+<cellXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/></cellXfs>
+<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles>
+</styleSheet>`);
+  zip.folder("xl").folder("worksheets").file("sheet1.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">
+<sheetViews><sheetView workbookViewId="0" showGridLines="0"/></sheetViews>
+<sheetFormatPr defaultRowHeight="15"/><sheetData/>
+<drawing r:id="rId1"/>
+</worksheet>`);
+  zip.folder("xl").folder("worksheets").folder("_rels").file("sheet1.xml.rels",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">
+<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/drawing" Target="../drawings/drawing1.xml"/>
+</Relationships>`);
+  zip.folder("xl").folder("drawings").file("drawing1.xml",`<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xdr:wsDr xmlns:xdr="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main">
+${drawing}
+</xdr:wsDr>`);
+  const blob=await zip.generateAsync({type:"blob",mimeType:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  dl(blob,safe()+".xlsx");
+}
+$("xls").onclick=exportEditableExcel;
+$("doc").onclick=()=>dl(new Blob(["\ufeff",`<h1>${esc(S.title)}</h1><table border=1><tr><th>序</th><th>負責單位</th><th>步驟</th><th>備註</th><th>圖形</th></tr>${table()}</table>`],{type:"application/msword"}),safe()+".doc");
+$("rulesBtn").onclick=()=>{const box=$("rules");box.classList.toggle("hidden");box.innerHTML="<ol>"+RULES.map(x=>`<li>${x}</li>`).join("")+"</ol>"};
+$("zin").onclick=()=>{zoom=Math.min(1.8,zoom+.1);render()};
+$("zout").onclick=()=>{zoom=Math.max(.4,zoom-.1);render()};
+$("fit").onclick=()=>{updateCanvasSize();zoom=Math.min(1,Math.max(.25,($("viewport").clientWidth-20)/canvasW));render()};
+$("addTab").onclick=()=>addDoc(false);$("dupTab").onclick=()=>addDoc(true);loadWorkspace();renderDocTabs();render();layout();
+</script></body></html>
